@@ -67,3 +67,23 @@
         (print nil)))))
 
 (prefixp "AGCT" "AGC")
+
+(defun appearsp (strand check)
+(if (> (length check) (length strand))
+  (print nil)
+  (progn
+    (setq it 0)
+    (loop for c across strand do
+      (if (>= it (+ (- (length strand) (length check)) 1))
+        (progn
+          (print nil)
+          (return))
+        (progn
+          (setq snippet (subseq strand it (+ it (length check))))
+          (if (string= snippet check)
+            (progn
+              (print t)
+              (return)))))
+      (setq it (+ it 1))))))
+
+(appearsp "AFGCT" "GC")
