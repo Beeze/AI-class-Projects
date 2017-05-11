@@ -55,3 +55,15 @@
     " T" (write-to-string numT))))
 
 (count-bases *strand*)
+
+(defun prefixp (strand prefix)
+  (if (> (length prefix) (length strand))
+    (print nil)
+    (progn
+      (setq len (length prefix))
+      (setq beginning-of-string (subseq strand 0 len))
+      (if (string= beginning-of-string prefix)
+        (print t)
+        (print nil)))))
+
+(prefixp "AGCT" "AGC")
