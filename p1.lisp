@@ -73,17 +73,26 @@
   (print nil)
   (progn
     (setq it 0)
-    (loop for c across strand do
+    (loop for c in strand do
       (if (>= it (+ (- (length strand) (length check)) 1))
         (progn
           (print nil)
           (return))
         (progn
           (setq snippet (subseq strand it (+ it (length check))))
-          (if (string= snippet check)
+          (if (equal snippet check)
             (progn
               (print t)
               (return)))))
       (setq it (+ it 1))))))
 
-(appearsp "AFGCT" "GC")
+(appearsp '(A F G C T) '(G C))
+
+(defun prefix (num strand)
+(if (> num (length strand))
+  (print "Please enter a number that is less than the length of the strand")
+  (print (subseq strand 0 num))))
+
+
+
+(prefix 4 '(A F G C T F))
