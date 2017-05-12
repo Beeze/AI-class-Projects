@@ -46,39 +46,59 @@
 
 (count-bases *strand*)
 
-;refactor to take in a list and return a list
+
 (defun prefixp (strand prefix)
   (if (> (length prefix) (length strand))
     (print nil)
     (progn
       (setq len (length prefix))
       (setq beginning-of-string (subseq strand 0 len))
-      (if (string= beginning-of-string prefix)
+      (if (equal beginning-of-string prefix)
         (print t)
         (print nil)))))
 
-(prefixp "AGCT" "AGC")
+(prefixp '(A G C T) '(A G C))
 
-;refactor to take in a list and return a list
+
 (defun appearsp (strand check)
   (if (> (length check) (length strand))
-    (print nil)
+    (return 'nil)
     (progn
       (setq it 0)
       (loop for c in strand do
         (if (>= it (+ (- (length strand) (length check)) 1))
           (progn
-            (print nil)
+            (return 'nil)
             (return))
           (progn
             (setq snippet (subseq strand it (+ it (length check))))
             (if (equal snippet check)
               (progn
-                (print t)
-                (return)))))
+                (return t)))))
         (setq it (+ it 1))))))
 
-(appearsp '(A F G C T) '(G C))
+(print (appearsp '(A F G C T) '(G F)))
+
+(defun coversp (test strand)
+(if (> (length test) (length strand))
+  (return nil)
+  (progn
+    (setq remainder (rem (length strand) (length test)))
+    (if (not (= remainder 0))
+      (return nil)
+      (progn
+        (setq number-of-its (/ (length strand) (length test)))
+        (setq it 0)
+        (setq nilholder nil)
+        (loop
+          (if (= number-of-its 0) return t)
+          (if (null (appearsp (subseq strand (* it (length test)) (+ (* it (length test)) (length test))) test ))
+            (return nil))
+            (setq it (+ it 1))
+            (setq number-of-its (- number-of-its 1))))))))
+
+(print (coversp '(t e) '(t e s t)))
+
 
 (defun prefix (num strand)
   (if (> num (length strand))
