@@ -5,9 +5,6 @@
     (#\G (string "G"))
     (#\C (string "C"))))
 
-(defun num-to-string (num)
-  (string num))
-
 (defun complement-base (base)
   (case base
     (#\A (string "T"))
