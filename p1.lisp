@@ -8,10 +8,10 @@
 
 (defun complement-base (base)
   (case base
-    ('A (string 'T))
-    ('T (string 'A))
-    ('G (string 'C))
-    ('C (string 'G))))
+    ('A (quote T))
+    ('T (quote A))
+    ('G (quote C))
+    ('C (quote G))))
 
 (defvar *base* 'C)
 (print (complement-base *base*))
@@ -19,20 +19,20 @@
 ; Refactor to take in a list instead of string
 (defun complement-strand (strand)
   (let ((complement (make-array 1 :adjustable t :fill-pointer 0)))
-    (loop for c across strand do
+    (loop for c in strand do
       (vector-push-extend (complement-base c) complement))
     (print complement)))
 
-(defvar *strand* "AGTC")
+(defvar *strand* '(A G T C))
 (complement-strand *strand*)
 
 ; Refactor to take in a list instead of string
 ; Refactor to return a list of lists instead of a list of strings.
 (defun make-double (strand)
-  (let ((double-strand (make-array 1 :adjustable t :fill-pointer 0)))
-    (loop for c across strand do
-      (vector-push-extend (concatenate 'string (char-to-string c) (complement-base c)) double-strand))
-      (print double-strand)))
+  (setq double-strand '())
+    (loop for c in strand do
+      (setq double-strand (append double-strand (list (list c (complement-base c))))))
+  (print double-strand))
 
 (make-double *strand*)
 
