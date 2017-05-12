@@ -7,7 +7,7 @@
 
 (print (complement-base 'A))
 
-; Refactor to take in a list instead of string
+
 (defun complement-strand (strand)
   (setq complement-strand '())
   (loop for c in strand do
@@ -17,8 +17,7 @@
 (defvar *strand* '(A G T C))
 (complement-strand *strand*)
 
-; Refactor to take in a list instead of string
-; Refactor to return a list of lists instead of a list of strings.
+
 (defun make-double (strand)
   (setq double-strand '())
     (loop for c in strand do
@@ -27,7 +26,7 @@
 
 (make-double *strand*)
 
-; Refactor to return the pairings as a list instead of string.
+
 (defun count-bases (strand)
   (setq numA 0)
   (setq numC 0)
@@ -87,6 +86,7 @@
     (print (subseq strand 0 num))))
 
 (prefix 4 '(A F G C T F))
+
 
 ;(defun draw-dna (strand)
 ;  (dotimes (length strand)
