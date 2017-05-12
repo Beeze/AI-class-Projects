@@ -1,11 +1,3 @@
-(defun char-to-string (character)
-  (case character
-    (#\A (string "A"))
-    (#\T (string "T"))
-    (#\G (string "G"))
-    (#\C (string "C"))))
-
-
 (defun complement-base (base)
   (case base
     ('A (quote T))
@@ -13,15 +5,14 @@
     ('G (quote C))
     ('C (quote G))))
 
-(defvar *base* 'C)
-(print (complement-base *base*))
+(print (complement-base 'A))
 
 ; Refactor to take in a list instead of string
 (defun complement-strand (strand)
-  (let ((complement (make-array 1 :adjustable t :fill-pointer 0)))
-    (loop for c in strand do
-      (vector-push-extend (complement-base c) complement))
-    (print complement)))
+  (setq complement-strand '())
+  (loop for c in strand do
+    (setq complement-strand (append  complement-strand (list (complement-base c)))))
+  (print complement-strand))
 
 (defvar *strand* '(A G T C))
 (complement-strand *strand*)
@@ -42,19 +33,17 @@
   (setq numC 0)
   (setq numG 0)
   (setq numT 0)
-  (loop for c across strand do
+  (loop for c in strand do
     (case c
-      (#\A (setq numA (+ numA 1)))
-      (#\C (setq numC (+ numC 1)))
-      (#\G (setq numG (+ numG 1)))
-      (#\T (setq numT (+ numT 1)))))
-
-  (print
-    (concatenate
-      'string "A" (write-to-string numA)
-      " C" (write-to-string numC)
-      " G" (write-to-string numG)
-      " T" (write-to-string numT))))
+      ('A (setq numA (+ numA 1)))
+      ('C (setq numC (+ numC 1)))
+      ('G (setq numG (+ numG 1)))
+      ('T (setq numT (+ numT 1)))))
+  (print (list
+    (list 'A numA)
+    (list 'C numC)
+    (list 'G numG)
+    (list 'T numT))))
 
 (count-bases *strand*)
 
