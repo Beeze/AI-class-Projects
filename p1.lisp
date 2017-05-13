@@ -85,17 +85,18 @@
   (progn
     (setq remainder (rem (length strand) (length test)))
     (if (not (= remainder 0))
-      (return nil)
+      (return "bad input")
       (progn
         (setq number-of-its (/ (length strand) (length test)))
         (setq it 0)
         (setq nilholder nil)
         (loop
-          (if (= number-of-its 0) return t)
-          (if (null (appearsp (subseq strand (* it (length test)) (+ (* it (length test)) (length test))) test ))
-            (return nil))
-            (setq it (+ it 1))
-            (setq number-of-its (- number-of-its 1))))))))
+          (if (= number-of-its 0) (return t))
+          (if (appearsp (subseq strand (* it (length test)) (+ (* it (length test)) (length test))) test )
+            (progn
+              (setq it (+ it 1))
+              (setq number-of-its (- number-of-its 1)))
+            (return nil))))))))
 
 (print (coversp '(t e) '(t e s t)))
 
