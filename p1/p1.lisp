@@ -16,9 +16,15 @@
 ;should return (T C C A).
 
 (defun complement-strand (strand)
+
+  ;Create an empty list to hold our DNA strands complement
   (setq complement-strand '())
+
+  ;Go through each element of the strand list, and complement the base.
   (loop for c in strand do
     (setq complement-strand (append  complement-strand (list (complement-base c)))))
+
+  ;Print the complement of the given strand
   (print complement-strand))
 
 (defvar *strand* '(A G T C))
@@ -30,7 +36,12 @@
 ;((G C) (G C) (A T) (C G) (T A)).
 
 (defun make-double (strand)
+  ;Create an empty list to hold our double DNA strands
   (setq double-strand '())
+
+    ;go through each base in the strand
+    ;create a list composed on each base and it's complement-base
+    ;append the newly created list to our double-strand list.
     (loop for c in strand do
       (setq double-strand (append double-strand (list (list c (complement-base c))))))
   (print double-strand))
@@ -45,16 +56,22 @@
 ;((A 2) (T 3) (G 1) (C 2)).
 
 (defun count-bases (strand)
+  ;Initialize variables that will count the number of occurrences of a base
   (setq numA 0)
   (setq numC 0)
   (setq numG 0)
   (setq numT 0)
+
+  ;Go through each base in the strand
+  ;increment the corresponding bases counter.
   (loop for c in strand do
     (case c
       ('A (setq numA (+ numA 1)))
       ('C (setq numC (+ numC 1)))
       ('G (setq numG (+ numG 1)))
       ('T (setq numT (+ numT 1)))))
+
+  ;Print the bases with their count.
   (print (list
     (list 'A numA)
     (list 'C numC)
@@ -67,12 +84,18 @@
 ;another and NIL otherwise. For example, (G T C) is a prefix
 ;of (G T C A T) but not of (A G G T C).
 (defun prefixp (strand prefix)
+
+  ;make sure the prefix is not bigger than the strand itself.
   (if (> (length prefix) (length strand))
     (print nil)
     (progn
+
+      ;take the prefix
+      ;Get a subsequence of the strand
+      ;Compare the given prefix to the beginning of the strand.
       (setq len (length prefix))
-      (setq beginning-of-string (subseq strand 0 len))
-      (if (equal beginning-of-string prefix)
+      (setq beginning-of-strand (subseq strand 0 len))
+      (if (equal beginning-of-strand prefix)
         (print t)
         (print nil)))))
 
@@ -82,21 +105,29 @@
 ;another. For example, (C A T) appears in (T C A T G) but not
 ;in (T C C G T A). Hint: If X appears in Y then X is a prefix
 ;of Y or (CDR Y) or (CDR (CDR Y)) or ...
+
 (defun appearsp (strand check)
+
+  ;make sure the prefix is not bigger than the strand itself.
   (if (> (length check) (length strand))
-    (return 'nil)
+    (return nil)
+
     (progn
       (setq it 0)
+      ; Go through each character in the strand
       (loop for c in strand do
+        ;Check to make sure we haven't gone outside the bounds of the strand
         (if (>= it (+ (- (length strand) (length check)) 1))
           (progn
-            (return 'nil)
+            (return nil)
             (return))
+          ;grab a snippet of the strand, compare it to the check list.
           (progn
             (setq snippet (subseq strand it (+ it (length check))))
             (if (equal snippet check)
               (progn
                 (return t)))))
+        ;Increment our counter
         (setq it (+ it 1))))))
 
 (print (appearsp '(A F G C T) '(G F)))
@@ -107,12 +138,22 @@
 ;assume neither input will be NIL.
 
 (defun coversp (test strand)
+
+;make sure the test list is not bigger than the strand itself.
 (if (> (length test) (length strand))
   (return nil)
   (progn
+
+    ; Check the remainder of dividing the strand length by the test length.
+    ; If the remainder is 0, we know the test list can go into the strand
+    ; an equal number of times
     (setq remainder (rem (length strand) (length test)))
     (if (not (= remainder 0))
       (return nil)
+
+      ; Test list can fit into the strand
+      ; We're going to go through, and check to see if the test strand
+      ; can be repeated to span the given strand.
       (progn
         (setq number-of-its (/ (length strand) (length test)))
         (setq it 0)
