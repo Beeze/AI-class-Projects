@@ -85,7 +85,7 @@
   (progn
     (setq remainder (rem (length strand) (length test)))
     (if (not (= remainder 0))
-      (return "bad input")
+      (return nil)
       (progn
         (setq number-of-its (/ (length strand) (length test)))
         (setq it 0)
@@ -100,7 +100,6 @@
 
 (print (coversp '(t e) '(t e s t)))
 
-
 (defun prefix (num strand)
   (if (> num (length strand))
     (print "Please enter a number that is less than the length of the strand")
@@ -109,20 +108,34 @@
 (prefix 4 '(A F G C T F))
 
 
-;(defun draw-dna (strand)
-;  (dotimes (length strand)
-;    (print '-))
-;  (dotimes (length strand)
-;    (print '!))
-;  (loop for c in strand do
-;    (print c))
-;  (dotimes (length strand)
-;    (print ':))
-;  (loop for c in strand do
-;    (print (complement-base c)))
-;  (dotimes (length strand)
-;    (print '!))
-;  (dotimes (* (length strand) 6)
-;    (print '-)))
+(defun draw-dna (strand)
+  (format t "~%")
+  (loop for i from 1 to (* (length strand) 2) do
+    (format t "-" #\return i))
+  (format t "~%")
+  (loop for i from 1 to (length strand) do
+    (format t "! " #\return i))
+  (format t "~%")
+  (loop for c in strand do
+    (format t "~a " c))
+  (format t "~%")
+  (loop for i from 1 to (length strand) do
+    (format t ": " #\return i))
+  (format t "~%")
+  (loop for c in strand do
+    (format t "~a " (complement-base c)))
+  (format t "~%")
+  (loop for i from 1 to (length strand) do
+    (format t "! " #\return i))
+  (format t "~%")
+  (loop for i from 1 to (* (length strand) 2) do
+    (format t "-" #\return i))
+  (format t "~%"))
 
-;(draw-dna '(A G T))
+(draw-dna '(A G T))
+
+;(defun testDraw ()
+;  (loop for i from 0 to 10 do
+;        (format t "-" #\return)))
+;
+;(testDraw)
