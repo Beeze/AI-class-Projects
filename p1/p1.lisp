@@ -1,3 +1,7 @@
+;COMPLEMENT-BASE takes a base as input and returns the
+;matching base. (COMPLEMENT-BASE 'A) should return T and so
+;forth for each base.
+
 (defun complement-base (base)
   (case base
     ('A (quote T))
@@ -7,6 +11,9 @@
 
 (print (complement-base 'A))
 
+;COMPLEMENT-STRAND returns the complementary strand of a
+;sequence of single-stranded DNA. (COMPLEMENT-STRAND '(A G G T))
+;should return (T C C A).
 
 (defun complement-strand (strand)
   (setq complement-strand '())
@@ -18,6 +25,10 @@
 (complement-strand *strand*)
 
 
+;MAKE-DOUBLE takes a single strand DNA and returns a double-
+;stranded version. (MAKE-DOUBLE '(G G A C T)) should return
+;((G C) (G C) (A T) (C G) (T A)).
+
 (defun make-double (strand)
   (setq double-strand '())
     (loop for c in strand do
@@ -26,6 +37,12 @@
 
 (make-double *strand*)
 
+;COUNT-BASES counts the number of bases of each type in
+;either single- or double-stranded DNA and returns the result
+;as a table. (COUNT-BASES '((G C) (A T) (T A) (C G))) should
+;return ((A 2) (T 2) (G 2) (C 2)) and
+;(COUNT-BASES '(A G T A C T C T)) should return
+;((A 2) (T 3) (G 1) (C 2)).
 
 (defun count-bases (strand)
   (setq numA 0)
@@ -46,7 +63,9 @@
 
 (count-bases *strand*)
 
-
+;PREFIXP returns T if one strand of DNA is a prefix of
+;another and NIL otherwise. For example, (G T C) is a prefix
+;of (G T C A T) but not of (A G G T C).
 (defun prefixp (strand prefix)
   (if (> (length prefix) (length strand))
     (print nil)
@@ -59,7 +78,10 @@
 
 (prefixp '(A G C T) '(A G C))
 
-
+;APPEARSP returns T if one DNA strand appears anywhere within
+;another. For example, (C A T) appears in (T C A T G) but not
+;in (T C C G T A). Hint: If X appears in Y then X is a prefix
+;of Y or (CDR Y) or (CDR (CDR Y)) or ...
 (defun appearsp (strand check)
   (if (> (length check) (length strand))
     (return 'nil)
@@ -78,6 +100,11 @@
         (setq it (+ it 1))))))
 
 (print (appearsp '(A F G C T) '(G F)))
+
+;COVERP returns T if its first input, repeated some number of
+;times, matches all of its second input. For example, (A G C)
+;covers (A G C A G C A G C) but not (A G C T T G). You may
+;assume neither input will be NIL.
 
 (defun coversp (test strand)
 (if (> (length test) (length strand))
@@ -100,6 +127,8 @@
 
 (print (coversp '(t e) '(t e s t)))
 
+;PREFIX returns the leftmost N bases of a DNA strand.
+;(PREFIX 4 '(C G A T T A G)) should return (C G A T).
 (defun prefix (num strand)
   (if (> num (length strand))
     (print "Please enter a number that is less than the length of the strand")
@@ -107,7 +136,10 @@
 
 (prefix 4 '(A F G C T F))
 
-
+;(extra credit) DRAW-DNA  takes a single-stranded DNA sequence
+;as input and draws it and its complementary strand.
+;(DRAW-DNA '(A G G T C A T T G) should produce the following
+;output:
 (defun draw-dna (strand)
   (format t "~%")
   (loop for i from 1 to (* (length strand) 2) do
@@ -133,9 +165,3 @@
   (format t "~%"))
 
 (draw-dna '(A G T))
-
-;(defun testDraw ()
-;  (loop for i from 0 to 10 do
-;        (format t "-" #\return)))
-;
-;(testDraw)
