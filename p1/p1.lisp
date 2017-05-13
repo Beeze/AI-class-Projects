@@ -7,9 +7,9 @@
     ('A (quote T))
     ('T (quote A))
     ('G (quote C))
-    ('C (quote G))))
+    ('C (quote G))
+    (otherwise nil)))
 
-(print (complement-base 'A))
 
 ;COMPLEMENT-STRAND returns the complementary strand of a
 ;sequence of single-stranded DNA. (COMPLEMENT-STRAND '(A G G T))
@@ -27,9 +27,6 @@
   ;Print the complement of the given strand
   (print complement-strand))
 
-(defvar *strand* '(A G T C))
-(complement-strand *strand*)
-
 
 ;MAKE-DOUBLE takes a single strand DNA and returns a double-
 ;stranded version. (MAKE-DOUBLE '(G G A C T)) should return
@@ -46,7 +43,6 @@
       (setq double-strand (append double-strand (list (list c (complement-base c))))))
   (print double-strand))
 
-(make-double *strand*)
 
 ;COUNT-BASES counts the number of bases of each type in
 ;either single- or double-stranded DNA and returns the result
@@ -78,8 +74,6 @@
     (list 'G numG)
     (list 'T numT))))
 
-(count-bases *strand*)
-
 ;PREFIXP returns T if one strand of DNA is a prefix of
 ;another and NIL otherwise. For example, (G T C) is a prefix
 ;of (G T C A T) but not of (A G G T C).
@@ -99,7 +93,6 @@
         (print t)
         (print nil)))))
 
-(prefixp '(A G C T) '(A G C))
 
 ;APPEARSP returns T if one DNA strand appears anywhere within
 ;another. For example, (C A T) appears in (T C A T G) but not
@@ -130,7 +123,6 @@
         ;Increment our counter
         (setq it (+ it 1))))))
 
-(print (appearsp '(A F G C T) '(G F)))
 
 ;COVERP returns T if its first input, repeated some number of
 ;times, matches all of its second input. For example, (A G C)
@@ -166,7 +158,6 @@
               (setq number-of-its (- number-of-its 1)))
             (return nil))))))))
 
-(print (coversp '(t e) '(t e s t)))
 
 ;PREFIX returns the leftmost N bases of a DNA strand.
 ;(PREFIX 4 '(C G A T T A G)) should return (C G A T).
@@ -175,7 +166,6 @@
     (print "Please enter a number that is less than the length of the strand")
     (print (subseq strand 0 num))))
 
-(prefix 4 '(A F G C T F))
 
 ;(extra credit) DRAW-DNA  takes a single-stranded DNA sequence
 ;as input and draws it and its complementary strand.
@@ -205,4 +195,50 @@
     (format t "-" #\return i))
   (format t "~%"))
 
+
+(print "testing out complement-base with base A & C")
+(print (complement-base 'A))
+(print (complement-base 'C))
+(print "testing out complement-base with base Y (false case)")
+(print (complement-base 'Y))
+
+(defvar *strand* '(A G T C))
+
+(print "testing out complement-strand with '(A G T C)")
+(complement-strand *strand*)
+
+(print "testing out count-bases with '(A G T C), '(A A A A) & '(A G T C C T G A)")
+(count-bases *strand*)
+(count-bases '(A A A A))
+(count-bases '(A G T C C T G A))
+
+(print "testing out make-double with '(A G T C), '(A A A A) & '(A G T C C T G A)")
+(make-double *strand*)
+(make-double '(A A A A))
+(make-double '(A G T C C T G A))
+
+(print "testing out prefixp with ['(A G C T) '(A G C)], ['(A A A A) '(A A)] & ['(A G T C C T G A) '(G T C)]")
+(prefixp '(A G C T) '(A G C))
+(prefixp '(A A A A) '(A A))
+(prefixp '(A G T C C T G A) '(G T C))
+
+(print "testing out appearsp with ['(A G C T) '(A G C)], ['(A A A A) '(A A)] & ['(A G T C C T G A) '(G T C)]")
+(print (appearsp '(A G T C C T G A) '(G T C)))
+(print (appearsp '(A G C T) '(A G C)))
+(print (appearsp '(A A A A) '(A A)))
+
+(print "testing out coversp with ['(t e) '(t e s t)], ['(t e) '(t e t e)] & ['(t) '(t t t t)]")
+(print (coversp '(t e) '(t e s t)))
+(print (coversp '(t e) '(t e t e)))
+(print (coversp '(t) '(t t t t)))
+
+(print "testing out coversp with [4 '(A F G C T F)], [2 '(A F G C T F)] & [7 '(A F G C T F)]")
+(prefix 4 '(A F G C T F))
+(prefix 2 '(A F G C T F))
+(prefix 7 '(A F G C T F))
+
+
+(print "testing out draw-dna with '(A G T), '(A G T C G A T) & '(A G T A G T A C T T T A)")
 (draw-dna '(A G T))
+(draw-dna '(A G T C G A T))
+(draw-dna '(A G T A G T A C T T T A))
