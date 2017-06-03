@@ -6,7 +6,7 @@
   (case base
     ('A (quote T))
     ('T (quote A))
-    ('G (quote C))
+    ('G (quote C)) 
     ('C (quote G))
     (otherwise nil)))
 
@@ -232,7 +232,7 @@
 (print (coversp '(t e) '(t e t e)))
 (print (coversp '(t) '(t t t t)))
 
-(print "testing out coversp with [4 '(A F G C T F)], [2 '(A F G C T F)] & [7 '(A F G C T F)]")
+(print "testing out prefix with [4 '(A F G C T F)], [2 '(A F G C T F)] & [7 '(A F G C T F)]")
 (prefix 4 '(A F G C T F))
 (prefix 2 '(A F G C T F))
 (prefix 7 '(A F G C T F))
